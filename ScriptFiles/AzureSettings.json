@@ -1,0 +1,18 @@
+{
+  "tenantId" : "<GUID>",
+  "grant_type": "client_credentials",
+  "Client_Id": "<GUID>",
+  "client_Secret": "<secret>",
+  "resource": "https://management.azure.com/",
+  "subscriptionId" : "<GUID>",
+  "resourceGroup" : "<String>",
+  "workFlowName" : "<String>",
+  "bodyFieldToSearch" : "<String>",
+  "maxNumberItemPerCall" : 50,
+  "searchFromDateTime" : "<yyyy-MM-ddTHH:mm:ssZ>",
+  "searchToDateTime" : "<yyyy-MM-ddTHH:mm:ssZ>",
+  "searchList" : [
+    "XXX",
+    "YYY"
+  ]
+}
