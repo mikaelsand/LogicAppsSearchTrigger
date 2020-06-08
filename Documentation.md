@@ -2,11 +2,11 @@
 If you think you know this, this is the TLDR;
 - Create a copy of the AzureSettings.json file and name it myAzureSettings.json
 - Get information from an App Registration, Client ID and the secret.
-- Update the information in the settings-file.
+- Update the other information in the settings-file.
 - The setting bodyFieldToSearch is the name of the trigger body property you wish to search
 - The searchlist is an array of all the values you wish to match.
-- Run the SeachTriggers.ps1 and watchit work.
-- A hit will save a file to a folder in the same directory.
+- Run the SeachTriggers.ps1 and watch it work.
+- A search-hit will save a file to a folder in the same directory.
 - The name of the file is the hit search term and the Logic App RunID.
 
 # Documentation
@@ -17,7 +17,7 @@ To be able to access the APIs for Logic Apps, you need to login, or authenticate
 The scripts are configured to use a Registered Application (client) and a client secret (aka password). This is used in an OAUTH flow. If you don't know how to log in to Azure using APIs I suggest you start by reading [this page](https://docs.microsoft.com/en-us/rest/api/azure/#create-the-request "How to authenticate a request").
 
 ### Create an App Registration
-This is documented very well in [this link](https://docs.microsoft.com/en-us/rest/api/azure/#register-your-client-application-with-azure-ad "Azure documentation").
+This is documented in [this link](https://docs.microsoft.com/en-us/rest/api/azure/#register-your-client-application-with-azure-ad "Azure documentation").
 Rememeber to save the **client ID** and **client secret** for later use.
 
 When you have created your Application you need to make sure it has enough access rights to the Logic App you want to search. Making it a contributor in the same resource group is more than enough. I do not know the minimum level.
@@ -25,9 +25,9 @@ When you have created your Application you need to make sure it has enough acces
 ### Get the App Information
 Beside the Client ID and Client secret you need the Tenant ID and the Subscription ID. 
 
-**The tenant ID**: You can either follow the instructions in [this Stack Overflow page](https://stackoverflow.com/questions/26384034/how-to-get-the-azure-account-tenant-id) or you can visit [https://www.whatismytenantid.com/](https://www.whatismytenantid.com/). The ID is a GUID. Save it for later use.
+**The tenant ID**: The tenant ID is listed in the Application Registration. The ID is a GUID. Save it for later use.
 
-The tenant ID is also listed in the Application Registration.
+
 
 **The Subscription ID**: You should really be able to find this GUID using the portal. Its in the Overview page of the Logic App you want to search.
 
@@ -56,17 +56,17 @@ Configured correctly, the top part should look similar to this
 If you have configured everything correctly you can run the script and the error should not be related to login or security issues.
 
 ### Logic App Info
-This part is separate form the login process and is used in the API-calls to get data from the right Logic App.
+This part is separate from the login process and is used in the API-calls to get data from the right Logic App.
 
 - `resourceGroup`: The name of the resource group the Logic App is located in.
 - `workFlowName`: The name of the Logic App you want to search in.
 - `bodyFieldToSearch`: The name of the JSON property you want to search in, in the trigger body. More info below.
-- `maxNumberItemPerCall`: The number of items (runs) you want to get per call. The API will send back a maximum of 250 items. This number is the page size of the response sent back from the API. A large number speeds up the process, but might have a negative impact on mempry and CPU. My suggestion is that you use a large number.
+- `maxNumberItemPerCall`: The number of items (runs) you want to get per call. The API will send back a maximum of 250 items. This number is somtimes called  page size. A large number speeds up the process, but might have a negative impact on memory and CPU. My suggestion is that you use a large number.
 - `searchFromDateTime`: To limit the number of runs you search thru you must set a time frame. This value is the 'from'. Runs must have executed after this value. The script is configured to follow the ISO standard of `yyyy-MM-ddTHH:mm:ssZ` and the time sent to the API must be in UTC-0 timezone.
 - `searchToDateTime`: The same restrictions apply as for `searchFromDateTime`. This must be larger than the FromDate.
 - `searchlist`: This is a json string array of the values you want to look for. I think it works for integers as well.
 
-Configured correctly, this top part should look similar to this
+Configured correctly, this part should look similar to this
 
 ```json
 "subscriptionId" : "782ebdc9-e486-42d8-95fb-111444888222",
@@ -109,7 +109,7 @@ If you look at a Logic App run at the top, you will see the Trigger. This is ver
 ```
 You can find the RunId, the name of the Logic App and other metadata. At the bottom is the BODY as is was sent to the Logic App when it was executed.
 
-In this case they are `CustomerID`, `OrderCategory`, `OrderID` and `OrderTotalEuro`. The search only supports searching in fields at the root level. If you where to search for all instances of Customer 2258 you would set
+In this case the properties are `CustomerID`, `OrderCategory`, `OrderID` and `OrderTotalEuro`. The search only supports searching in fields at the root level. If you where to search for all instances of Customer 2258 you would set
 
 ```json
 "bodyFieldToSearch": "CustomerID",
@@ -129,16 +129,16 @@ Searching for orders `A-1234`, `B-2458` and `B-1212` in a field called `Ordering
 ```
 
 ### APIs used
-If you need additional information on the APIs used in this solutions you can find you can find them under each link.
+If you need additional information on the APIs used in this solution:
 
 To get the trigger history the [Workflow Trigger Histories - List](https://docs.microsoft.com/en-us/rest/api/logic/workflowtriggerhistories/list) api is used.
-To get metadata from the trigger, the outputsLink in the trigger history is used.
+To get metadata from the trigger, the outputsLink in the trigger history body is used.
 
 ## General information on the script
-No error handling, whatso ever.
+No error handling, what so ever.
 The APIs can only return a max number of 250 rows. This limits the script to a max of 250 rows.
 
 # Not suppored - might be coming
-Searching in Action in a Logic App, not only the trigger.
-More advanced search, not not the root level of the payload.
-Searching in querystring. Currently the call must have been made via POST and a body for the value to be searchable.
+Searching in an Action in a Logic App, not only the trigger.
+More advanced search, not only the root level of the payload.
+Searching the querystring. Currently the call must have been made via POST and a body for the value to be searchable.
