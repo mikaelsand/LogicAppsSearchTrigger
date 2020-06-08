@@ -139,6 +139,6 @@ No error handling, what so ever.
 The APIs can only return a max number of 250 rows. This limits the script to a max of 250 rows.
 
 # Not suppored - might be coming
-Searching in an Action in a Logic App, not only the trigger.
-More advanced search, not only the root level of the payload.
-Searching the querystring. Currently the call must have been made via POST and a body for the value to be searchable.
+- Searching in an Action in a Logic App, not only the trigger.
+- More advanced search, not only the root level of the payload.
+- Searching the querystring. Currently the call must have been made via POST and a body for the value to be searchable.
