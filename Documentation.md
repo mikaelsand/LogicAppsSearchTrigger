@@ -1,6 +1,6 @@
 # Short walkthru
 If you think you know this, this is the TLDR;
-- Create a copy of the AzureSettings.json file and name it mySettings.json
+- Create a copy of the AzureSettings.json file and name it myAzureSettings.json
 - Get information from an App Registration, Client ID and the secret.
 - Update the information in the settings-file.
 - The setting bodyFieldToSearch is the name of the trigger body property you wish to search
@@ -32,7 +32,7 @@ The tenant ID is also listed in the Application Registration.
 **The Subscription ID**: You should really be able to find this GUID using the portal. Its in the Overview page of the Logic App you want to search.
 
 ## Understanding the settings
-In order to make the script work you should create a copy of the `AzureSettings.json` file and name it `mySettings.json`. This makes sure your settings are not commited to the GIT repo as this file is the .gitignore file.
+In order to make the script work you should create a copy of the `AzureSettings.json` file and name it `myAzureSettings.json`. This makes sure your settings are not commited to the GIT repo as this file is the .gitignore file.
 
 There are several parts of the file.
 ### Login Info
