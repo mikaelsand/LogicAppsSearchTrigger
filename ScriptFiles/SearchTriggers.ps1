@@ -12,11 +12,13 @@ if ( $numberOfItems -gt 250 ) { $numberOfItems = 250 } #250 items is the maximum
 
 $searchKey = $azureSettings.bodyFieldToSearch
 $searchList = $azureSettings.searchList
-$filterStart = $azureSettings.searchFromDateTime.ToString('yyyy-MM-ddTHH:mm:ssZ')
-$filterEnd = $azureSettings.searchToDateTime.ToString('yyyy-MM-ddTHH:mm:ssZ')
+$filterStart = $azureSettings.searchFromDateTime.tostring('yyyy-MM-ddTHH:mm:ssZ')
+$filterEnd = $azureSettings.searchToDateTime.tostring('yyyy-MM-ddTHH:mm:ssZ')
+$triggerName = $azureSettings.triggerName
 
 # Create the first URI
-$uri = "https://management.azure.com/subscriptions/$($azureSettings.subscriptionId)/resourceGroups/$($azureSettings.resourceGroup)/providers/Microsoft.Logic/workflows/$($azureSettings.workFlowName)/triggers/manual/histories?api-version=2016-06-01"
+
+$uri = "https://management.azure.com/subscriptions/$($azureSettings.subscriptionId)/resourceGroups/$($azureSettings.resourceGroup)/providers/Microsoft.Logic/workflows/$($azureSettings.workFlowName)/triggers/$($triggerName)/histories?api-version=2016-06-01"
 $uri = $uri + '&$top=' + $numberOfItems
 $uri = $uri + '&$filter=StartTime gt '+ $filterStart + ' and StartTime lt ' + $filterEnd
 
