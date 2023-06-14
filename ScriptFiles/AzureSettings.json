@@ -1,9 +1,4 @@
 {
-  "tenantId" : "<GUID>",
-  "grant_type": "client_credentials",
-  "Client_Id": "<GUID>",
-  "client_Secret": "<secret>",
-  "resource": "https://management.azure.com/",
   "subscriptionId" : "<GUID>",
   "resourceGroup" : "<String>",
   "workFlowName" : "<String>",

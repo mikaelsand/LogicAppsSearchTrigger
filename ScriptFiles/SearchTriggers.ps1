@@ -1,10 +1,12 @@
-. .\LoginToAzure.ps1
+# Login as a user
+Connect-AzAccount
+
+# Get the token, and convert it to a secure string
+$authToken = Get-AzAccessToken | Select-Object -ExpandProperty Token
+$authToken = ConvertTo-SecureString $authToken -asplaintext -force
 
 # Get seetings data
 $azureSettings = Get-Content -Path '.\myAzureSettings.json' | ConvertFrom-Json
-
-# Get a Token from Azure
-$authToken = GetLoginToken $azureSettings
 
 # Get some config values
 $numberOfItems = $azureSettings.maxNumberItemPerCall
@@ -17,7 +19,6 @@ $filterEnd = $azureSettings.searchToDateTime.tostring('yyyy-MM-ddTHH:mm:ssZ')
 $triggerName = $azureSettings.triggerName
 
 # Create the first URI
-
 $uri = "https://management.azure.com/subscriptions/$($azureSettings.subscriptionId)/resourceGroups/$($azureSettings.resourceGroup)/providers/Microsoft.Logic/workflows/$($azureSettings.workFlowName)/triggers/$($triggerName)/histories?api-version=2016-06-01"
 $uri = $uri + '&$top=' + $numberOfItems
 $uri = $uri + '&$filter=StartTime gt '+ $filterStart + ' and StartTime lt ' + $filterEnd
