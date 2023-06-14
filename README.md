@@ -1,6 +1,6 @@
 # ExtractLogicAppsTracking
 
-A small collection of PowerShell scripts to help you find Logic Apps executions without tracking configured. Use PowerShell version 7+
+A PowerShell script to help you find Logic Apps executions without tracking configured. Use PowerShell version 7+
 
 ## Tracking in Logic Apps
 
@@ -16,13 +16,11 @@ Logic Apps exposes APIs and this PS script calls these APIs to get Trigger histo
 
 ## What you have to do
 
-You need to configure an App Registration in Azure and give it access rights to the Logic App you want to get information from. Then, you update a settingsfile with login information and what you need to search for, you hit enter and then you wait.
+Update the settingsfile with information on what you need to search for, you hit enter and then you wait.
 
 ## The files
 
 **AzureSettings.json** Contains information on where you want to search, and what to search for as well as you login information.
-
-**LoginToAzure.ps1** A reusable powershell script that logs into Azure and returns the token as a SecureString.
 
 **SearchTriggers.ps1** The PowerShell Script to start. It useses the settings from AzureSettings.json and the LoginToAzure.ps1 All files must be in the same folder.
 
