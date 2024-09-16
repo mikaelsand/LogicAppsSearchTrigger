@@ -49,10 +49,10 @@ do {
         $searchValue = $triggerInfo.body.$searchKey
 
         # Try to find the tracked value in the list of searchable items
-        if ($searchList.Contains($searchValue))
+        if ($searchValue | Select-String -pattern $searchList)
         {
-            Write-Host "Found $($searchValue)! Saving..."
-            $filename = ".\OutFiles\$($searchValue)_$($triggerProperties.run.name).json"
+            Write-Host "Found someting in $($searchKey)! Saving..."
+            $filename = ".\OutFiles\$($searchKey)_$($triggerProperties.run.name).json"
             $triggerInfo | ConvertTo-Json  | New-Item -Path $filename -ItemType File -Force
         }
 

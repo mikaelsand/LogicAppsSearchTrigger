@@ -8,7 +8,7 @@ If you think you know this, this is the TLDR;
 - The searchlist is an array of all the values you wish to match.
 - Run the SeachTriggers.ps1 and watch it work.
 - A search-hit will save a file to a folder in the same directory.
-- The name of the file is the hit search term and the Logic App RunID.
+- The name of the file is the body level property and the Logic App RunID.
 
 # Documentation
 
@@ -18,21 +18,21 @@ You have to use a user account that has rights to read trigger history of the Lo
 
 ## Understanding the settings
 
-In order to make the script work you should create a copy of the `AzureSettings.json` file and name it `myAzureSettings.json`. This makes sure your settings are not commited to the GIT repo as this file is the .gitignore file.
+In order to make the script work you should create a copy of the `AzureSettings.json` file and name it `myAzureSettings.json`. This makes sure your settings are not commited to the GIT repo as this file is the .gitignore file. The name is also hardcoded into the PS script.
 
 There are several parts of the file.
 
 ### Logic App Info
 
-This part is separate from the login process and is used in the API-calls to get data from the right Logic App.
+This part is used in the API-calls to get data from the right Logic App.
 
 - `subscriptionId`: The ID of the subscription the Logic App is located in.
 - `resourceGroup`: The name of the resource group the Logic App is located in.
-- `workFlowName`: The name of the Logic App you want to search in.
-- `triggerName`: The name of the trigger. Use `request` (or sometimes `manual`) for a HTTP-based trigger. For others, look in the trigger history for the trigger name. It is in the `Callback URL [POST]` field.
+- `workFlowName`: The name of the Logic App you want to search triggers for.
+- `triggerName`: The name of the trigger. Use `request` (or sometimes `manual`) for a HTTP-based trigger. For others, look in the trigger history for the trigger name. It is in the `Workflow URL` field.
 - `bodyFieldToSearch`: The name of the JSON property you want to search in, in the trigger body. More info below.
-- `maxNumberItemPerCall`: The number of items (runs) you want to get per call. The API will send back a maximum of 250 items. This number is somtimes called  page size. A large number speeds up the process, but might have a negative impact on memory and CPU. My suggestion is that you use a large number.
-- `searchFromDateTime`: To limit the number of runs you search thru you must set a time frame. This value is the 'from'. Runs must have executed after this value. The script is configured to follow the ISO standard of `yyyy-MM-ddTHH:mm:ssZ` and the time sent to the API must be in UTC-0 timezone.
+- `maxNumberItemPerCall`: The number of items (runs) you want to get per call. The API will send back a maximum of 250 items. This number is somtimes called page size. A large number speeds up the process, but might have a negative impact on memory and CPU. My suggestion is that you use a large number.
+- `searchFromDateTime`: To limit the number of runs you search thru you must set a time frame. This value is the 'from'. Runs must have executed after this value. The script is configured to follow the ISO standard of `yyyy-MM-ddTHH:mm:ssZ` and the time sent to the API must be in UTC timezone.
 - `searchToDateTime`: The same restrictions apply as for `searchFromDateTime`. This must be larger than the FromDate.
 - `searchlist`: This is a json string array of the values you want to look for. I think it works for integers as well.
 
@@ -44,14 +44,14 @@ Configured correctly, this part should look similar to this
 "workFlowName" : "OrderFlow-PROD",
 "bodyFieldToSearch" : "OrderId",
 "maxNumberItemPerCall" : 50,
-"searchFromDateTime" : "2023-06-05T00:00:00Z",
-"searchToDateTime" : "2023-06-05T23:59:59Z",
+"searchFromDateTime" : "2024-09-05T00:00:00Z",
+"searchToDateTime" : "2024-09-05T23:59:59Z",
 "searchList" : [
   "A-41105"
 ]
 ```
 
-This looks in for order number `A-41105` in the `OrderId` field for all executions of `OrderFlow-PROD` on the `5th of June 2023`. The page size is `50`.
+This looks in for order number `A-41105` in the `OrderId` field for all executions of `OrderFlow-PROD` on the `9th of Seåtember 2024`. The page size is `50`.
 
 #### bodyFieldToSearch
 
@@ -98,6 +98,19 @@ Searching for orders `A-1234`, `B-2458` and `B-1212` in a field called `Ordering
   "A-1234",
   "B-2458",
   "B-1212"
+]
+```
+
+### New from September 24
+
+You can now also do a full string search of the value in a body property. If, for instance, you have a property called `payload` and the value of the payload is an XML-document, you can search that XML-document for any value.
+
+Searching for the invoice ID `ABC1234` in an XML-document inside a property called `payload` results in this configuration:
+
+```json
+"bodyFieldToSearch": "payload",
+"searchList" : [
+  "ABC1234"
 ]
 ```
 

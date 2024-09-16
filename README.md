@@ -20,9 +20,9 @@ Update the settingsfile with information on what you need to search for, you hit
 
 ## The files
 
-**AzureSettings.json** Contains information on where you want to search, and what to search for as well as you login information.
+**AzureSettings.json** Contains information on where you want to search, and what to search for.
 
-**SearchTriggers.ps1** The PowerShell Script to start. It useses the settings from AzureSettings.json and the LoginToAzure.ps1 All files must be in the same folder.
+**SearchTriggers.ps1** The PowerShell Script. It uses the settings from AzureSettings.json which must be in the same folder.
 
 # Documentation
 
