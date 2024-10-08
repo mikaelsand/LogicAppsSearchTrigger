@@ -46,7 +46,13 @@ do {
         $triggerInfo = Invoke-RestMethod -Uri $triggerOutputsLink.uri -Method Get
 
         # Get the tracked value of the searched key for the current item. 
-        $searchValue = $triggerInfo.body.$searchKey
+        # If no body property is given, the body itself will be searched.
+        if ( $searchKey -eq "" ) {
+            $searchValue = $triggerInfo.body
+        }
+        else {
+            $searchValue = $triggerInfo.body.$searchKey
+        }
 
         # Try to find the tracked value in the list of searchable items
         if ($searchValue | Select-String -pattern $searchList)
@@ -68,3 +74,4 @@ do {
 } until (!$nextLink)
 
 Write-Host "===== Job's done! ====="
+

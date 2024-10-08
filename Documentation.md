@@ -114,6 +114,17 @@ Searching for the invoice ID `ABC1234` in an XML-document inside a property call
 ]
 ```
 
+### New from October 24
+
+If you do not have any properties in the body and want to search the body property, just set the `bodyFieldToSearch` to an empty string.
+
+```json
+"bodyFieldToSearch": "",
+"searchList" : [
+  "ABC1234"
+]
+```
+
 ### APIs used
 
 If you need additional information on the APIs used in this solution:
