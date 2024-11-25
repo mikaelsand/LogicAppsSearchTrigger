@@ -57,8 +57,11 @@ do {
         # Try to find the tracked value in the list of searchable items
         if ($searchValue | Select-String -pattern $searchList)
         {
+            # Add additional information to the output.
             Write-Host "Found someting in $($searchKey)! Saving..."
             $filename = ".\OutFiles\$($searchKey)_$($triggerProperties.run.name).json"
+            $triggerInfo | Add-Member -MemberType NoteProperty -Name "StartTime" -Value $triggerProperties."startTime"
+            $triggerInfo | Add-Member -MemberType NoteProperty -Name "clientTrackingId" -Value $currentItem."name"
             $triggerInfo | ConvertTo-Json  | New-Item -Path $filename -ItemType File -Force
         }
 

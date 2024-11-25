@@ -125,6 +125,10 @@ If you do not have any properties in the body and want to search the body proper
 ]
 ```
 
+### New from December 24
+
+The start time and the client tracking ID is now part of the output file.
+
 ### APIs used
 
 If you need additional information on the APIs used in this solution:
